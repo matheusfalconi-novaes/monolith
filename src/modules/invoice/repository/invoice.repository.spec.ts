@@ -26,45 +26,42 @@ describe("Invoice repository tests", () => {
   });
 
   it("should find a invoice", async () => {
-    const invoice = await InvoiceModel.create(
-      {
-        id: "1",
-        name: "Invoice 1",
-        document: "Invoice 1 document",
+    const invoiceRepository = new InvoiceRepository();
+    const invoice = new Invoice({
+      id: new Id("1"),
+      name: "Invoice 1",
+      document: "Invoice 1 document",
+      address: new Address({
         street: "Street",
         number: 1,
         complement: "Complement",
         city: "City",
         state: "State",
         zipCode: "123",
-        items: [
-          {
-            id: "1",
-            name: "Product 1",
-            price: 10,
-          },
-        ],
-        total: 10,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      { include: [{ model: ProductModel }] }
-    );
-    const invoiceRepository = new InvoiceRepository();
+      }),
+      items: [
+        new Product({
+          id: new Id("1"),
+          name: "Product 1",
+          price: 10,
+        }),
+      ],
+    });
+    await invoiceRepository.generate(invoice);
 
     const found = await invoiceRepository.find("1");
 
-    expect(found.id.id).toBe(invoice.id);
+    expect(found.id.id).toBe(invoice.id.id);
     expect(found.name).toBe(invoice.name);
     expect(found.document).toBe(invoice.document);
-    expect(found.address.street).toBe(invoice.street);
-    expect(found.address.number).toBe(invoice.number);
-    expect(found.address.complement).toBe(invoice.complement);
-    expect(found.address.city).toBe(invoice.city);
-    expect(found.address.state).toBe(invoice.state);
-    expect(found.address.zipCode).toBe(invoice.zipCode);
+    expect(found.address.street).toBe(invoice.address.street);
+    expect(found.address.number).toBe(invoice.address.number);
+    expect(found.address.complement).toBe(invoice.address.complement);
+    expect(found.address.city).toBe(invoice.address.city);
+    expect(found.address.state).toBe(invoice.address.state);
+    expect(found.address.zipCode).toBe(invoice.address.zipCode);
     expect(found.items.length).toBe(1);
-    expect(found.items[0].id.id).toBe(invoice.items[0].id);
+    expect(found.items[0].id.id).toBe(invoice.items[0].id.id);
     expect(found.items[0].name).toBe(invoice.items[0].name);
     expect(found.items[0].price).toBe(invoice.items[0].price);
     expect(found.total).toBe(invoice.total);

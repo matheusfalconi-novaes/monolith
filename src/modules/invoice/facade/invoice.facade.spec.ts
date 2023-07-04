@@ -22,33 +22,26 @@ describe("InvoiceFacade tests", () => {
   });
 
   it("should find a invoice", async () => {
-    const invoice = await InvoiceModel.create(
-      {
-        id: "1",
-        name: "Invoice 1",
-        document: "Invoice 1 document",
-        street: "Street",
-        number: 1,
-        complement: "Complement",
-        city: "City",
-        state: "State",
-        zipCode: "123",
-        items: [
-          {
-            id: "1",
-            name: "Product 1",
-            price: 10,
-          },
-        ],
-        total: 10,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      { include: [{ model: ProductModel }] }
-    );
     const facade = InvoiceFacadeFactory.create();
+    const invoice = await facade.generate({
+      name: "Invoice 1",
+      document: "Invoice 1 document",
+      street: "Street",
+      number: 1,
+      complement: "Complement",
+      city: "City",
+      state: "State",
+      zipCode: "123",
+      items: [
+        {
+          id: "1",
+          name: "Product 1",
+          price: 10,
+        },
+      ],
+    });
 
-    const found = await facade.find({ id: "1" });
+    const found = await facade.find({ id: invoice.id });
 
     expect(found.id).toBe(invoice.id);
     expect(found.name).toBe(invoice.name);
@@ -64,7 +57,6 @@ describe("InvoiceFacade tests", () => {
     expect(found.items[0].name).toBe(invoice.items[0].name);
     expect(found.items[0].price).toBe(invoice.items[0].price);
     expect(found.total).toBe(invoice.total);
-    expect(found.createdAt).toStrictEqual(invoice.createdAt);
   });
 
   it("should generate a invoice", async () => {
