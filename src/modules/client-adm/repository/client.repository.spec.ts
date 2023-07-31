@@ -1,8 +1,9 @@
 import { Sequelize } from "sequelize-typescript";
-import { ClientModel } from "../repository/client.model";
+import { ClientModel } from "./client.model";
 import Client from "../domain/client.entity";
 import Id from "../../@shared/domain/value-object/id.value-object";
 import ClientRepository from "./client.repository";
+import Address from "../domain/value-object/address.value-object";
 
 describe("ClientRepository tests", () => {
   let sequelize: Sequelize;
@@ -28,7 +29,15 @@ describe("ClientRepository tests", () => {
       id: new Id("1"),
       name: "Client 1",
       email: "client1@client.com",
-      address: "Address Client 1",
+      document: "document",
+      address: new Address({
+        street: "Street",
+        city: "City",
+        complement: "Complement",
+        number: 1,
+        state: "State",
+        zipCode: "000",
+      }),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -41,7 +50,13 @@ describe("ClientRepository tests", () => {
     expect(inserted.id).toEqual(client.id.id);
     expect(inserted.name).toEqual(client.name);
     expect(inserted.email).toEqual(client.email);
-    expect(inserted.address).toEqual(client.address);
+    expect(inserted.document).toEqual(client.document);
+    expect(inserted.street).toEqual(client.address.street);
+    expect(inserted.city).toEqual(client.address.city);
+    expect(inserted.complement).toEqual(client.address.complement);
+    expect(inserted.number).toEqual(client.address.number);
+    expect(inserted.state).toEqual(client.address.state);
+    expect(inserted.zipCode).toEqual(client.address.zipCode);
     expect(inserted.createdAt).toEqual(client.createdAt);
     expect(inserted.updatedAt).toEqual(client.updatedAt);
   });
@@ -51,7 +66,13 @@ describe("ClientRepository tests", () => {
       id: "1",
       name: "Client 1",
       email: "client1@client.com",
-      address: "Address Client 1",
+      document: "Document",
+      street: "Street",
+      city: "City",
+      complement: "Complement",
+      number: 1,
+      state: "State",
+      zipCode: "000",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -62,7 +83,8 @@ describe("ClientRepository tests", () => {
     expect(found.id.id).toEqual(client.id);
     expect(found.name).toEqual(client.name);
     expect(found.email).toEqual(client.email);
-    expect(found.address).toEqual(client.address);
+    expect(found.document).toEqual(client.document);
+    expect(found.address.street).toEqual(client.street);
     expect(found.createdAt).toEqual(client.createdAt);
     expect(found.updatedAt).toEqual(client.updatedAt);
   });

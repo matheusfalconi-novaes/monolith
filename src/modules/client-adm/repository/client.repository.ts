@@ -1,7 +1,8 @@
 import Id from "../../@shared/domain/value-object/id.value-object";
 import Client from "../domain/client.entity";
-import { ClientModel } from "../repository/client.model";
-import ClientGateway from "./client.gateway";
+import { ClientModel } from "./client.model";
+import ClientGateway from "../gateway/client.gateway";
+import Address from "../domain/value-object/address.value-object";
 
 export default class ClientRepository implements ClientGateway {
   async add(client: Client): Promise<void> {
@@ -9,7 +10,13 @@ export default class ClientRepository implements ClientGateway {
       id: client.id.id,
       name: client.name,
       email: client.email,
-      address: client.address,
+      document: client.document,
+      street: client.address.street,
+      city: client.address.city,
+      complement: client.address.complement,
+      number: client.address.number,
+      state: client.address.state,
+      zipCode: client.address.zipCode,
       createdAt: client.createdAt,
       updatedAt: client.updatedAt,
     });
@@ -25,7 +32,15 @@ export default class ClientRepository implements ClientGateway {
       id: new Id(clientFound.id),
       name: clientFound.name,
       email: clientFound.email,
-      address: clientFound.address,
+      document: clientFound.document,
+      address: new Address({
+        street: clientFound.street,
+        city: clientFound.city,
+        complement: clientFound.complement,
+        number: clientFound.number,
+        state: clientFound.state,
+        zipCode: clientFound.zipCode,
+      }),
       createdAt: clientFound.createdAt,
       updatedAt: clientFound.updatedAt,
     });

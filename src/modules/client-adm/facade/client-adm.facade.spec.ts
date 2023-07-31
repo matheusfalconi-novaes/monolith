@@ -26,7 +26,13 @@ describe("ClientAdmFacade tests", () => {
       id: "1",
       name: "Client 1",
       email: "client@client.com",
-      address: "Address",
+      document: "Document",
+      street: "Street",
+      city: "City",
+      complement: "Complement",
+      number: 1,
+      state: "State",
+      zipCode: "000",
     };
 
     await facadeFactory.add(input);
@@ -39,7 +45,13 @@ describe("ClientAdmFacade tests", () => {
     expect(client.id).toEqual(input.id);
     expect(client.name).toEqual(input.name);
     expect(client.email).toEqual(input.email);
-    expect(client.address).toEqual(input.address);
+    expect(client.document).toEqual(input.document);
+    expect(client.street).toEqual(input.street);
+    expect(client.city).toEqual(input.city);
+    expect(client.complement).toEqual(input.complement);
+    expect(client.number).toEqual(input.number);
+    expect(client.state).toEqual(input.state);
+    expect(client.zipCode).toEqual(input.zipCode);
   });
 
   it("should find a client", async () => {
@@ -47,7 +59,13 @@ describe("ClientAdmFacade tests", () => {
       id: "1",
       name: "Client 1",
       email: "client@client.com",
-      address: "Address",
+      document: "Document",
+      street: "Street",
+      city: "City",
+      complement: "Complement",
+      number: 1,
+      state: "State",
+      zipCode: "000",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -59,7 +77,13 @@ describe("ClientAdmFacade tests", () => {
     expect(client.id).toEqual(created.id);
     expect(client.name).toEqual(created.name);
     expect(client.email).toEqual(created.email);
-    expect(client.address).toEqual(created.address);
+    expect(client.document).toEqual(created.document);
+    expect(client.street).toEqual(created.street);
+    expect(client.city).toEqual(created.city);
+    expect(client.complement).toEqual(created.complement);
+    expect(client.number).toEqual(created.number);
+    expect(client.state).toEqual(created.state);
+    expect(client.zipCode).toEqual(created.zipCode);
     expect(client.createdAt).toEqual(created.createdAt);
     expect(client.updatedAt).toEqual(created.updatedAt);
   });
